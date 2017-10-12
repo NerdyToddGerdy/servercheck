@@ -12,6 +12,11 @@ router.post('/', auth.isLoggedIn, function (req, res, next) {
     github_id: req.user.github_id,
     url: req.body.url,
     check_interval: 5,
+    last_check: {
+      response_code: null,
+      message: null,
+      time: 'never'
+    },
     created_at: Date.now(),
     updated_at: Date.now()
   })

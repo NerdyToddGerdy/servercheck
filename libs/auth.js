@@ -10,4 +10,11 @@ Auth.prototype.isLoggedIn = function (req, res, next) {
   res.redirect('/')
 }
 
+Auth.prototype.filter = function (model, req, done) {
+  model.find({github_id: req.user.github_id}, function (err, docs) {
+    if (err) console.log(err)
+    done(docs)
+  })
+}
+
 module.exports = new Auth()

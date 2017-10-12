@@ -12,6 +12,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 mongoose.connect(process.env.DB_URL, { useMongoClient: true })
 
+// Get our models
 var User = require('./models/user')
 
 // Passport session setup.
@@ -82,9 +83,12 @@ app.use('/auth/github/callback', authGithubCall)
 var logout = require('./routes/logout')
 app.use('/logout', logout)
 
-// API routes...note the above should be a SPA...so that's a good todo
-var apiServer = require('./routes/api/v1/server')
-app.use('/api/v1/server', apiServer)
+// API Routes
+var serverApi = require('./routes/api/server')
+app.use('/api/v1/server', serverApi)
+
+var userApi = require('./routes/api/user')
+app.use('/api/v1/user', userApi)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
