@@ -4,8 +4,8 @@ var Schema = mongoose.Schema
 
 // create a schema
 var serverSchema = new Schema({
-  github_id: { type: String, required: true, unique: true },
-  url: { type: String, required: true, unique: true },
+  github_id: { type: String, required: true },
+  url: { type: String, required: true },
   check_interval: Number,
   last_check: {
     response_code: Number,

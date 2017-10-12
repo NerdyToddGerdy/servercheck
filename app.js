@@ -65,13 +65,13 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // App routes
 var index = require('./routes/index')
-app.use('/servers', index)
+app.use('/', index)
 
 var servers = require('./routes/servers')
 app.use('/servers', servers)
 
 var settings = require('./routes/settings')
-app.use('/auth/github', settings)
+app.use('/settings', settings)
 
 var authGithub = require('./routes/auth-github')
 app.use('/auth/github', authGithub)
@@ -80,7 +80,7 @@ var authGithubCall = require('./routes/auth-github-callback')
 app.use('/auth/github/callback', authGithubCall)
 
 var logout = require('./routes/logout')
-app.use('/auth/github/callback', logout)
+app.use('/logout', logout)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
