@@ -46,8 +46,8 @@ passport.use(new GitHubStrategy({
   }
 ))
 
-var app = express()
-var hbs = exphbs.create({extname: '.hbs', defaultLayout: 'main'})
+const app = express()
+const hbs = exphbs.create({extname: '.hbs', defaultLayout: 'main'})
 
 app.engine('.hbs', hbs.engine)
 
@@ -73,14 +73,18 @@ app.use('/servers', servers)
 var settings = require('./routes/settings')
 app.use('/settings', settings)
 
-var authGithub = require('./routes/auth-github')
+var authGithub = require('./routes/auth/github')
 app.use('/auth/github', authGithub)
 
-var authGithubCall = require('./routes/auth-github-callback')
+var authGithubCall = require('./routes/auth/github-callback')
 app.use('/auth/github/callback', authGithubCall)
 
 var logout = require('./routes/logout')
 app.use('/logout', logout)
+
+// API routes...note the above should be a SPA...so that's a good todo
+var apiServer = require('./routes/api/v1/server')
+app.use('/api/v1/server', apiServer)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
