@@ -1,9 +1,14 @@
 var express = require('express')
-var router = express.Router()
+const router = express.Router()
+const path = require('path')
+const User = require(path.join(__dirname, '../../models/user'))
 
-/* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { user: req.user, isLoggedIn: false })
+  if (!req.isAuthenticated()) { return res.status(500).json({error: 'not authorized'}) }
+  User.find({ github_id: req.user.github_id }, '-_id -__v -github_id', function (err, docs) {
+    if (err) throw err
+    res.json(docs)
+  })
 })
 
 module.exports = router
