@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- "6"
+- "8"
+sudo: false
+cache:
+  directories:
+  - node_modules
+before_install:
+- npm install -g bithound
+script:
+- bithound check git@github.com:chriskacerguis/servercheck.git
