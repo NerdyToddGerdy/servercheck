@@ -19,20 +19,22 @@
   </div>
 </div>
 
-<div class="row pt-5">
+<div class="row pt-5" id="app">
   <div class="col">
 
     <!-- Server -->
-    <div class="media">
-      <i class="d-flex mr-3 fa fa-server fa-3x text-success"></i>
-      <div class="media-body">
-        <h5 class="mt-0">https://test.com/page</h5>
-        <small>Last Check: mm/dd/YYYY at hh:mm</small>
+    <div v-for="item in items">
+      <div class="media">
+        <i v-if="item.last_check.response_code == 200" class="d-flex mr-3 fa fa-server fa-3x text-success"></i>
+        <i v-else class="d-flex mr-3 fa fa-server fa-3x text-danger"></i>
+        <div class="media-body">
+          <h5 class="mt-0">\{{ item.url }}</h5>
+          <small>Last Check: \{{ item.last_check.time }}</small>
+        </div>
       </div>
-    </div>
     <div class="clearfix pb-5"></div>
-
-    <!-- Server -->
+    </div>
+    <!-- Server 
     <div class="media">
       <i class="d-flex mr-3 fa fa-server fa-3x text-danger"></i>
       <div class="media-body">
@@ -41,6 +43,6 @@
       </div>
     </div>
     <div class="clearfix pb-5"></div>
-    
+    -->
   </div>
 </div>

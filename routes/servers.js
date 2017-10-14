@@ -8,6 +8,7 @@ router.get('/', auth.isLoggedIn, function (req, res, next) {
 })
 
 router.post('/', auth.isLoggedIn, function (req, res, next) {
+  console.log(req.body)
   var server = new Server({
     github_id: req.user.github_id,
     url: req.body.url,
@@ -15,14 +16,14 @@ router.post('/', auth.isLoggedIn, function (req, res, next) {
     last_check: {
       response_code: null,
       message: null,
-      time: 'never'
+      time: null
     },
     created_at: Date.now(),
     updated_at: Date.now()
   })
 
   server.save(function (err) {
-    if (err) throw err
+    if (err) console.log(err)
     res.redirect('/servers')
   })
 })
