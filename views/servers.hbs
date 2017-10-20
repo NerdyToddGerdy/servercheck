@@ -25,11 +25,12 @@
     <!-- Server -->
     <div v-for="item in items">
       <div class="media">
-        <i v-if="item.last_check.response_code == 200" class="d-flex mr-3 fa fa-server fa-3x text-success"></i>
-        <i v-else class="d-flex mr-3 fa fa-server fa-3x text-danger"></i>
+        <i v-if="item.check_status == 'ok'" class="d-flex mr-3 fa fa-server fa-3x text-success"></i>
+        <i v-else-if="item.check_status == 'critical'" class="d-flex mr-3 fa fa-server fa-3x text-danger"></i>
+        <i v-else class="d-flex mr-3 fa fa-server fa-3x text-muted"></i>
         <div class="media-body">
           <h5 class="mt-0">\{{ item.url }}</h5>
-          <small>Last Check: \{{ item.updated_at }}</small>
+          <small>Last Check: \{{ item.check_time }}</small>
         </div>
       </div>
     <div class="clearfix pb-5"></div>

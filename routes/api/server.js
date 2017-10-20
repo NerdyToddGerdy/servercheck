@@ -16,11 +16,10 @@ router.post('/', function (req, res, next) {
     github_id: req.user.github_id,
     url: req.body.url,
     check_interval: 5,
-    last_check: {
-      response_code: null,
-      message: null,
-      time: 'never'
-    },
+    check_status: 'unknown',
+    check_time: null,
+    check_message: null,
+    created_at: Date.now(),
     updated_at: Date.now()
   })
 

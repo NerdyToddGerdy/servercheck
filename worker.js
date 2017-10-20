@@ -5,7 +5,7 @@ if (process.env.NODE_ENV !== 'production') require('dotenv').config()
 
 mongoose.connect(process.env.DB_URL, { useMongoClient: true })
 mongoose.Promise = global.Promise
-mongoose.set('debug', true)
+// mongoose.set('debug', true)
 
 var Server = require('./models/server')
 
@@ -14,16 +14,16 @@ stream.eachAsync(doc => {
   return new Promise((resolve, reject) => {
     rp({uri: doc.url, simple: false, resolveWithFullResponse: true})
     .then(function (res) {
-      doc.last_check.response_code = res && res.statusCode
-      doc.last_check.time = Date.now()
+      doc.check_status = 'ok'
+      doc.check_time = Date.now()
       doc.save().then(() => {
         resolve()
       })
     })
     .catch(function (err) {
-      doc.last_check.message = err
-      // doc.last_check.response_code = res && res.statusCode
-      doc.last_check.time = Date.now()
+      doc.check_message = err
+      doc.check_status = 'critical'
+      doc.check_time = Date.now()
       doc.save().then(() => {
         resolve()
       })
