@@ -7,11 +7,9 @@ var serverSchema = new Schema({
   github_id: { type: String, required: true },
   url: { type: String, required: true },
   check_interval: Number,
-  last_check: {
-    response_code: Number,
-    message: String,
-    time: Date
-  },
+  check_status: String,
+  check_time: Date,
+  check_message: String,
   created_at: Date,
   updated_at: Date
 })

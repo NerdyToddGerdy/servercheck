@@ -8,16 +8,13 @@ router.get('/', auth.isLoggedIn, function (req, res, next) {
 })
 
 router.post('/', auth.isLoggedIn, function (req, res, next) {
-  console.log(req.body)
   var server = new Server({
     github_id: req.user.github_id,
     url: req.body.url,
     check_interval: 5,
-    last_check: {
-      response_code: null,
-      message: null,
-      time: null
-    },
+    check_status: 'unknown',
+    check_time: null,
+    check_message: null,
     created_at: Date.now(),
     updated_at: Date.now()
   })
