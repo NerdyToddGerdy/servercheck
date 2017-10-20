@@ -23,10 +23,14 @@
     "method-override": "^2.3.10",
     "mongoose": "^4.12.1",
     "passport": "^0.4.0",
-    "passport-github2": "^0.1.11",
-    "request": "^2.83.0"
+    "passport-github2": "^0.1.11"
   },
   "devDependencies": {
     "dotenv": "^4.0.0"
+  },
+  "standard": {
+    "ignore": [
+      "/public/javascripts/*.js"
+    ]
   }
 }

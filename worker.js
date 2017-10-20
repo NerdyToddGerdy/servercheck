@@ -1,83 +1,39 @@
-const request = require('request')
 const mongoose = require('mongoose')
+const rp = require('request-promise-native')
 
 if (process.env.NODE_ENV !== 'production') require('dotenv').config()
-mongoose.Promise = global.Promise
+
 mongoose.connect(process.env.DB_URL, { useMongoClient: true })
+mongoose.Promise = global.Promise
 mongoose.set('debug', true)
 
 var Server = require('./models/server')
 
-// Doesn't work
-Server.find(function (err, items) {
-  if (err) return console.log(err)
-  items.forEach(function (item) {
-    var query = {url: item.url}
-    Server.findOneAndUpdate(query, {updated_at: Date.now()}, function (err, doc) {
-      if (err) return console.log(err)
-      console.log(doc)
+const stream = Server.find().cursor()
+stream.eachAsync(doc => {
+  return new Promise((resolve, reject) => {
+    rp({uri: doc.url, simple: false, resolveWithFullResponse: true})
+    .then(function (res) {
+      doc.last_check.response_code = res && res.statusCode
+      doc.last_check.time = Date.now()
+      doc.save().then(() => {
+        resolve()
+      })
+    })
+    .catch(function (err) {
+      doc.last_check.message = err
+      // doc.last_check.response_code = res && res.statusCode
+      doc.last_check.time = Date.now()
+      doc.save().then(() => {
+        resolve()
+      })
     })
   })
 })
-
-// Works!
-var query = {url: 'https://google.com'}
-Server.findOneAndUpdate(query, {updated_at: Date.now()}, function (err, doc) {
-  if (err) return console.log(err)
-  console.log(doc)
+.then(() => {
+  mongoose.disconnect()
+  return Promise.resolve()
 })
-
-mongoose.connection.close()
-
-
-/*
-const request = require('request')
-const mongoose = require('mongoose')
-// const async = require('async')
-
-if (process.env.NODE_ENV !== 'production') require('dotenv').config()
-
-mongoose.Promise = global.Promise
-mongoose.connect(process.env.DB_URL, { useMongoClient: true })
-mongoose.set('debug', true)
-
-
-const Server = require('./models/server')
-
-var arr = []
-
-// doesn't work
-
-Server.find(function (err, docs) {
-  docs.forEach(function(item){
-    arr.push({url: item.url, id: item.github_id})
-  })
-  arr.forEach(function(item){
-    Server.update({url: item.url, github_id: item.github_id}, {check_interval: 10}, function (err, raw) {
-      console.log(raw)
-    })
-  })
+.catch(function (err) {
+  if (err) console.log(err)
 })
-
-Server.update({url: '', github_id: ''}, {check_interval: 10}, function (err, raw) {
-  console.log(raw)
-})
-
-
-// works
-/*
-let arrA = ['https://google.com', 'https://microsoft.com', 'https://this-is-total-fail.com']
-let id = '2414647'
-arrA.forEach(function(item){
-  Server.update({url: item, github_id: id}, {check_interval: 10}, function (err, raw) {
-    //console.log(raw)
-  })
-})
-
-// works
-/*
-Server.update({url: 'https://google.com', github_id: '2414647'}, {check_interval: 10}, function (err, raw) {
-  console.log(raw)
-})
-*/
-//mongoose.connection.close()
