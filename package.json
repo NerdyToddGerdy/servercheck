@@ -18,13 +18,13 @@
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.5",
     "mailgun-js": "^0.13.1",
     "method-override": "^2.3.10",
     "mongoose": "^4.12.1",
     "passport": "^0.4.0",
     "passport-github2": "^0.1.11",
-    "request": "^2.83.0",
+    "request": "^2.84.0",
     "request-promise-native": "^1.0.5"
   },
   "devDependencies": {
